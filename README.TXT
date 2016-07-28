@@ -1,3 +1,8 @@
+=======================================================================
+NOTE: THIS IS A FORK of the official project located at
+git.drogon.net/wiringPi
+=======================================================================
+
 
 wiringPi README
 ===============

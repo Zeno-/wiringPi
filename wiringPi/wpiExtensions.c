@@ -48,6 +48,8 @@
 #include "pcf8591.h"
 #include "mcp3002.h"
 #include "mcp3004.h"
+#include "mcp3204.h"
+#include "mcp3208.h"
 #include "mcp4802.h"
 #include "mcp3422.h"
 #include "max31855.h"
@@ -507,6 +509,58 @@ static int doExtensionMcp3004 (char *progName, int pinBase, char *params)
 
 
 /*
+ * doExtensionMcp3204:
+ *	Analog IO
+ *	mcp3204:base:spiChan
+ *********************************************************************************
+ */
+
+static int doExtensionMcp3204 (char *progName, int pinBase, char *params)
+{
+  int spi ;
+
+  if ((params = extractInt (progName, params, &spi)) == NULL)
+    return FALSE ;
+
+  if ((spi < 0) || (spi > 1))
+  {
+    verbError ("%s: SPI channel (%d) out of range", progName, spi) ;
+    return FALSE ;
+  }
+
+  mcp3204Setup (pinBase, spi) ;
+
+  return TRUE ;
+}
+
+
+/*
+ * doExtensionMcp3208:
+ *	Analog IO
+ *	mcp3208:base:spiChan
+ *********************************************************************************
+ */
+
+static int doExtensionMcp3208 (char *progName, int pinBase, char *params)
+{
+  int spi ;
+
+  if ((params = extractInt (progName, params, &spi)) == NULL)
+    return FALSE ;
+
+  if ((spi < 0) || (spi > 1))
+  {
+    verbError ("%s: SPI channel (%d) out of range", progName, spi) ;
+    return FALSE ;
+  }
+
+  mcp3208Setup (pinBase, spi) ;
+
+  return TRUE ;
+}
+
+
+/*
  * doExtensionMax5322:
  *	Analog O
  *	max5322:base:spiChan
@@ -679,6 +733,8 @@ static struct extensionFunctionStruct extensionFunctions [] =
   { "pcf8591",		&doExtensionPcf8591	},
   { "mcp3002",		&doExtensionMcp3002	},
   { "mcp3004",		&doExtensionMcp3004	},
+  { "mcp3204",		&doExtensionMcp3204	},
+  { "mcp3208",		&doExtensionMcp3208	},
   { "mcp4802",		&doExtensionMcp4802	},
   { "mcp3422",		&doExtensionMcp3422	},
   { "max31855",		&doExtensionMax31855	},

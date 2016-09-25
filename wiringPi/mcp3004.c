@@ -38,13 +38,14 @@
 static int myAnalogRead (struct wiringPiNodeStruct *node, int pin)
 {
   unsigned char spiData [3] ;
-  unsigned char chanBits ;
   int chan = pin - node->pinBase ;
 
-  chanBits = 0b10000000 | (chan << 4) ;
-
-  spiData [0] = 1 ;		// Start bit
-  spiData [1] = chanBits ;
+  /* First 8-bits. Start bit with leading zeroes. Unfortunately to 8-bit align
+   * we have to send 7 leading zeroes before the start bit and then after that
+   * the rest of what we need to do.
+   */
+  spiData [0] = 1;
+  spiData [1] = (0b1000 | (chan & 0x7)) << 4; // SGL/DIFF,D2,D1,D0
   spiData [2] = 0 ;
 
   wiringPiSPIDataRW (node->fd, spiData, 3) ;

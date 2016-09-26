@@ -2,6 +2,7 @@
  * mcp3004.c:
  *	Extend wiringPi with the MCP3004 SPI Analog to Digital convertor
  *	Copyright (c) 2012-2013 Gordon Henderson
+ *	Copyright (c) 2016 Craig Robbins
  *
  *	Thanks also to "ShorTie" on IRC for some remote debugging help!
  ***********************************************************************
@@ -37,20 +38,20 @@
 
 static int myAnalogRead (struct wiringPiNodeStruct *node, int pin)
 {
-  unsigned char spiData [3] ;
+  unsigned char spiData[3] ;
   int chan = pin - node->pinBase ;
 
   /* First 8-bits. Start bit with leading zeroes. Unfortunately to 8-bit align
    * we have to send 7 leading zeroes before the start bit and then after that
    * the rest of what we need to do.
    */
-  spiData [0] = 1;
+  spiData [0] = 1; // Start bit
   spiData [1] = (0b1000 | (chan & 0x7)) << 4; // SGL/DIFF,D2,D1,D0
-  spiData [2] = 0 ;
+  spiData [2] = 0;
 
-  wiringPiSPIDataRW (node->fd, spiData, 3) ;
+  wiringPiSPIDataRW (node->fd, spiData, 3);
 
-  return ((spiData [1] << 8) | spiData [2]) & 0x3FF ;
+  return ((spiData [1] << 8) | spiData [2]) & 0x3FF;
 }
 
 

@@ -89,6 +89,33 @@ int wiringPiSPIDataRW (int channel, unsigned char *data, int len)
   return ioctl (spiFds [channel], SPI_IOC_MESSAGE(1), &spi) ;
 }
 
+/*
+ * wiringPiSPIDataWrite:
+ *	Write and Read a block of data over the SPI bus.
+ *********************************************************************************
+ */
+
+int wiringPiSPIDataWrite(int channel, const unsigned char *data, int len)
+{
+  struct spi_ioc_transfer spi ;
+
+  channel &= 1 ;
+
+// Mentioned in spidev.h but not used in the original kernel documentation
+//	test program )-:
+
+  memset (&spi, 0, sizeof (spi)) ;
+
+  spi.tx_buf        = (unsigned long)data ;
+  spi.rx_buf        = 0;
+  spi.len           = len ;
+  spi.delay_usecs   = spiDelay ;
+  spi.speed_hz      = spiSpeeds [channel] ;
+  spi.bits_per_word = spiBPW ;
+
+  return ioctl (spiFds [channel], SPI_IOC_MESSAGE(1), &spi) ;
+}
+
 
 /*
  * wiringPiSPISetupMode:

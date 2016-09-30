@@ -91,7 +91,7 @@ int wiringPiSPIDataRW (int channel, unsigned char *data, int len)
 
 /*
  * wiringPiSPIDataWrite:
- *	Write and Read a block of data over the SPI bus.
+ *	Write a block of data over the SPI bus.
  *********************************************************************************
  */
 

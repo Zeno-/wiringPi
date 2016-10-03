@@ -53,7 +53,7 @@ int mcp4921Setup(int pinBase, int spiChannel, int bufferedMode, int useGain)
 {
 	struct wiringPiNodeStruct *node;
 
-	if (wiringPiSPISetup (spiChannel, 2000000) < 0)
+	if (wiringPiSPISetup (spiChannel, 20000000) < 0)
 		return FALSE;
 
 	node = wiringPiNewNode (pinBase, 1);
